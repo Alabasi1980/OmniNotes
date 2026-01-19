@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OmniNotes</title>
+    
+    <!-- EasyMDE Markdown Editor -->
+    <link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css">
+    <script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
+
+    <!-- Mermaid JS for Diagrams -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              app: {
+                bg: 'var(--bg-main)',
+                surface: 'var(--bg-panel)',
+                surface2: 'var(--bg-panel-2)',
+                border: 'var(--border-color)',
+                text: 'var(--text-main)',
+                muted: 'var(--text-muted)',
+                accent: 'var(--color-accent)',
+                primary: 'var(--color-primary)',
+              }
+            },
+            fontFamily: {
+              sans: ['var(--font-body)', 'Cairo', 'sans-serif'],
+              display: ['var(--font-display)', 'Cairo', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+
+    <style>
+      :root {
+        --font-body: 'Outfit';
+        --font-display: 'Outfit';
+      }
+
+      body {
+        font-family: var(--font-body), 'Cairo', sans-serif;
+        background-color: var(--bg-main);
+        color: var(--text-main);
+        transition: background-color 0.5s ease, color 0.3s ease;
+        overflow-x: hidden;
+      }
+      
+      h1, h2, h3, h4, h5, h6 {
+        font-family: var(--font-display), 'Cairo', sans-serif;
+      }
+
+      /* =========================================
+         THEME 1: COSMIC NEBULA
+         ========================================= */
+      body.theme-cosmic {
+        --bg-main: #0f172a;
+        --bg-panel: rgba(30, 41, 59, 0.7);
+        --bg-panel-2: rgba(255, 255, 255, 0.05);
+        --border-color: rgba(255, 255, 255, 0.1);
+        --text-main: #e2e8f0;
+        --text-muted: #94a3b8;
+        --color-accent: #c084fc;
+        --color-primary: #6366f1;
+        --font-body: 'Outfit';
+        --font-display: 'Outfit';
+        background-image: radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%);
+        background-attachment: fixed;
+        background-size: cover;
+      }
+      body.theme-cosmic .aurora-bg {
+        display: block; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1;
+        background: radial-gradient(circle at 15% 50%, rgba(76, 29, 149, 0.4), transparent 25%), radial-gradient(circle at 85% 30%, rgba(219, 39, 119, 0.2), transparent 25%);
+        pointer-events: none;
+      }
+      body.theme-cosmic .glass-panel { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+
+      /* =========================================
+         THEME 2: ZEN MODERN
+         ========================================= */
+      body.theme-zen {
+        --bg-main: #f3f4f6;
+        --bg-panel: #ffffff;
+        --bg-panel-2: #f9fafb;
+        --border-color: #e5e7eb;
+        --text-main: #1f2937;
+        --text-muted: #6b7280;
+        --color-accent: #0ea5e9;
+        --color-primary: #2563eb;
+        --font-body: 'Outfit';
+        --font-display: 'Outfit';
+        background-image: none;
+      }
+      body.theme-zen .aurora-bg { display: none; }
+      body.theme-zen .glass-panel, body.theme-zen .glass-card {
+        background: var(--bg-panel); border: 1px solid var(--border-color); box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1); backdrop-filter: none;
+      }
+
+      /* Utilities */
+      .glass-panel { background: var(--bg-panel); border: 1px solid var(--border-color); transition: all 0.3s ease; }
+      .glass-card { background: var(--bg-panel-2); border: 1px solid var(--border-color); transition: all 0.3s ease; }
+      ::-webkit-scrollbar { width: 8px; height: 8px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb { background: var(--color-primary); border-radius: 3px; opacity: 0.8; }
+      
+      .markdown-body { color: var(--text-main); background: transparent !important; font-family: inherit; }
+      .markdown-body h1, .markdown-body h2 { color: var(--text-main); border-bottom-color: var(--border-color); font-family: var(--font-display); }
+      .markdown-body a { color: var(--color-accent); text-decoration: underline; }
+      .markdown-body strong { color: var(--text-main); font-weight: 700; }
+      .markdown-body pre { background-color: var(--bg-panel-2) !important; border: 1px solid var(--border-color); }
+      
+      body.theme-cosmic .markdown-body code { background-color: rgba(255,255,255,0.1); color: #f472b6; }
+      body.theme-zen .markdown-body code { background-color: #f3f4f6; color: #d946ef; border: 1px solid #e5e7eb; }
+
+      body.theme-zen .EasyMDEContainer .editor-toolbar {
+        background-color: var(--bg-panel-2) !important; color: var(--text-main) !important; border-color: var(--border-color) !important;
+      }
+      body.theme-zen .EasyMDEContainer .editor-toolbar button { color: var(--text-main) !important; }
+      body.theme-zen .EasyMDEContainer .editor-toolbar button:hover { background-color: rgba(0,0,0,0.1) !important; }
+      body.theme-zen .CodeMirror { background-color: var(--bg-panel) !important; color: var(--text-main) !important; border-color: var(--border-color) !important; }
+      body.theme-zen .CodeMirror-cursor { border-left: 1px solid #000 !important; }
+
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "rxjs": "https://esm.sh/rxjs@^7.8.2?conditions=es2015",
+    "rxjs/operators": "https://esm.sh/rxjs@^7.8.2/operators?conditions=es2015",
+    "rxjs/ajax": "https://esm.sh/rxjs@^7.8.2/ajax?conditions=es2015",
+    "rxjs/webSocket": "https://esm.sh/rxjs@^7.8.2/webSocket?conditions=es2015",
+    "rxjs/testing": "https://esm.sh/rxjs@^7.8.2/testing?conditions=es2015",
+    "rxjs/fetch": "https://esm.sh/rxjs@^7.8.2/fetch?conditions=es2015",
+    "@angular/router": "https://esm.sh/@angular/router@^21.1.0?external=rxjs",
+    "@google/genai": "https://esm.sh/@google/genai@^1.37.0?external=rxjs",
+    "@angular/compiler": "https://esm.sh/@angular/compiler@^21.1.0?external=rxjs",
+    "@angular/platform-browser": "https://esm.sh/@angular/platform-browser@^21.1.0?external=rxjs",
+    "@angular/core": "https://esm.sh/@angular/core@^21.1.0?external=rxjs",
+    "@angular/forms": "https://esm.sh/@angular/forms@^21.1.0?external=rxjs",
+    "@angular/common": "https://esm.sh/@angular/common@^21.1.0?external=rxjs",
+    "@angular/common/http": "https://esm.sh/@angular/common@^21.1.0/http?external=rxjs",
+    "@angular/platform-browser/animations": "https://esm.sh/@angular/platform-browser@^21.1.0/animations?external=rxjs"
+  }
+}
+</script>
+</head>
+  <!-- Initial class will be set by ThemeService -->
+  <body class="theme-cosmic">
+    <div class="aurora-bg"></div>
+    <app-root></app-root>
+  </body>
+</html>

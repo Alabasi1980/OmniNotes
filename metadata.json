@@ -1,0 +1,7 @@
+{
+  "name": "OmniNotes",
+  "description": "A versatile second-brain application for capturing, organizing, and retrieving multi-type daily notes, lessons, and problems using Markdown and rich metadata.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
